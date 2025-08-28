@@ -65,6 +65,7 @@ I created a new Vultr **Firewall Group** and assigned it to **all three servers*
 
 📸 *Screenshots:*  
 ![Deploy Windows](./screenshots/vultr-deploy-windows.png)  
+![Deploy Windows](./screenshots/vultr-deploy-testwindows.png)  
 ![Deploy Ubuntu](./screenshots/vultr-deploy-ubuntu.png)  
 ![Attach VPC & Firewall Group](./screenshots/vultr-attach-vpc-fw.png)
 
