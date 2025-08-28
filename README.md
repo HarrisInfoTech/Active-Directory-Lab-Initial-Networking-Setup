@@ -86,6 +86,7 @@ From Ubuntu (Splunk host), I attempted to ping the Windows **Test** machine’s 
 ```bash
 ping <windows-test-vpc-ip>
 Result: Destination Host Unreachable (initial failure)
+```
 
 📸 Screenshot:
 
@@ -94,7 +95,9 @@ On the Windows Test machine:
 
 powershell
 Copy code
+```bash
 ipconfig
+```
 Observation: Two adapters were present; the machine had a public IP but not the expected VPC IP.
 
 📸 Screenshot:
