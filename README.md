@@ -89,6 +89,7 @@ Result: Destination Host Unreachable (initial failure)
 ```
 
 📸 Screenshot:
+![Ping Results](./screenshots/Destination-Host-Unreachable.png)
 
 Step 4 — Inspect Windows Test NICs
 On the Windows Test machine:
@@ -101,6 +102,7 @@ ipconfig
 Observation: Two adapters were present; the machine had a public IP but not the expected VPC IP.
 
 📸 Screenshot:
+![IPCONFIG](./screenshots/ipconfig.png)
 
 Step 5 — Fix Windows Test NIC to Use VPC IP (Manual IPv4)
 Windows → Network & Internet Settings → Adapter Options → (VPC NIC) → Properties → IPv4
@@ -118,7 +120,7 @@ Subnet mask: <your VPC mask> (e.g., 255.255.255.0)
 Saved settings
 
 📸 Screenshots:
-
+![DHCP](./screenshots/DHCP.png)
 
 Step 6 — Re-test from Ubuntu to Windows Test
 Back on Ubuntu:
@@ -129,6 +131,7 @@ ping <windows-test-vpc-ip>
 Result: Successful ping replies over the VPC network.
 
 📸 Screenshot:
+![Splunk Testmachine](./screenshots/Splunk-Testmachine.png)
 
 Step 7 — Apply the Same Fix on the Domain Controller
 Repeated Step 5 for the Windows DC node:
@@ -137,7 +140,7 @@ Set the VPC IPv4 config on the correct NIC (manual IP + subnet)
 
 Verified with ipconfig
 
-📸 Screenshots:
+
 
 
 Step 8 — Validate VPC Connectivity to DC
@@ -149,8 +152,10 @@ ping <windows-dc-vpc-ip>
 Result: Successful replies over VPC.
 
 📸 Screenshot:
+![Ping AD](./screenshots/Ping-AD.png)
 
 🧩 Troubleshooting Notes
+
 Symptom	Likely Cause	Fix
 Destination Host Unreachable	Windows VM on public NIC only	Set the VPC NIC to a manual IPv4 in the VPC subnet
 Can’t RDP/SSH after FW change	Cloud FW too strict	Ensure 3389/22 allowed from your IP in the Vultr FW Group
@@ -158,26 +163,7 @@ Wrong adapter edited	Multiple NICs (public + VPC)	Identify the VPC adapter (no d
 No name resolution on VPC	No DNS for private subnet	Use VPC IPs directly or stand up DNS later (e.g., on DC)
 Need routed internet from VPC NIC	Missing gateway/DNS on VPC NIC	Add gateway/DNS if required by your design
 
-📸 Screenshot Checklist
-pgsql
-Copy code
-/screenshots/
-├── vpc-connectivity-diagram.png
-├── vultr-deploy-windows.png
-├── vultr-deploy-ubuntu.png
-├── vultr-attach-vpc-fw.png
-├── vultr-firewall-group.png
-├── rdp-windows.png
-├── ssh-ubuntu.png
-├── ubuntu-ping-unreachable.png
-├── windows-ipconfig-before.png
-├── windows-ipv4-manual.png
-├── windows-ipconfig-after.png
-├── ubuntu-ping-success.png
-├── windows-dc-ipv4-manual.png
-├── windows-dc-ipconfig-after.png
-└── ping-dc-success.png
-🔐 Redaction tip: blur/replace real public IPs with 203.0.113.25 and private IPs with 10.0.0.x.
+
 
 🏁 Results
 Deployed 3 VMs (Windows DC, Windows Test, Ubuntu/Splunk) with VPC 2.0
