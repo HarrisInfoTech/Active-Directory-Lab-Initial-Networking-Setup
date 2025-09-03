@@ -167,4 +167,12 @@ Result: Successful replies over VPC.
 
 ![Ping AD](./screenshots/Ping-AD.png)
 
+🏁 Results
 
+Deployed 3 VMs (Windows DC, Windows Test, Ubuntu/Splunk) with VPC 2.0
+
+Applied a locked-down Vultr Firewall Group (SSH/RDP from my IP only)
+
+Fixed Windows NICs to use VPC IPs (manual IPv4) on the correct adapter
+
+Verified private connectivity (Ubuntu → Windows Test & DC) over the VPC network
