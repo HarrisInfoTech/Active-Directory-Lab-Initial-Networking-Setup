@@ -63,9 +63,16 @@ I created a new Vultr **Firewall Group** and assigned it to **all three servers*
   - Set a **hostname/label**
   - **Deploy**
 
-📸 *Screenshots:*  
+📸 Screenshots:*  
+
 ![Deploy Windows](./screenshots/vultr-deploy-windows.png)  
+
+📸 Screenshots:
+
 ![Deploy Windows](./screenshots/vultr-deploy-testwindows.png)  
+
+📸 Screenshots:
+
 ![Deploy Ubuntu](./screenshots/vultr-deploy-ubuntu.png)  
 
 ---
@@ -74,8 +81,9 @@ I created a new Vultr **Firewall Group** and assigned it to **all three servers*
 - **Windows VMs**: Connected via **RDP** (public IP) from my workstation
 - **Ubuntu VM**: Accessed via **SSH** (or web console)
 
-📸 *Screenshots:*  
+📸 *Screenshots: 
 ![RDP to Windows](./screenshots/rdp-windows.png)  
+📸 Screenshots:
 ![SSH to Ubuntu](./screenshots/ssh-ubuntu.png)
 
 ---
@@ -89,6 +97,7 @@ Result: Destination Host Unreachable (initial failure)
 ```
 
 📸 Screenshot:
+
 ![Ping Results](./screenshots/Destination-Host-Unreachable.png)
 
 Step 4 — Inspect Windows Test NICs
@@ -102,6 +111,7 @@ ipconfig
 Observation: Two adapters were present; the machine had a public IP but not the expected VPC IP.
 
 📸 Screenshot:
+
 ![IPCONFIG](./screenshots/ipconfig.png)
 
 Step 5 — Fix Windows Test NIC to Use VPC IP (Manual IPv4)
@@ -120,6 +130,7 @@ Subnet mask: <your VPC mask> (e.g., 255.255.255.0)
 Saved settings
 
 📸 Screenshots:
+
 ![DHCP](./screenshots/DHCP.png)
 
 Step 6 — Re-test from Ubuntu to Windows Test
@@ -131,6 +142,7 @@ ping <windows-test-vpc-ip>
 Result: Successful ping replies over the VPC network.
 
 📸 Screenshot:
+
 ![Splunk Testmachine](./screenshots/Splunk-Testmachine.png)
 
 Step 7 — Apply the Same Fix on the Domain Controller
@@ -152,24 +164,7 @@ ping <windows-dc-vpc-ip>
 Result: Successful replies over VPC.
 
 📸 Screenshot:
+
 ![Ping AD](./screenshots/Ping-AD.png)
 
-🧩 Troubleshooting Notes
 
-Symptom	Likely Cause	Fix
-Destination Host Unreachable	Windows VM on public NIC only	Set the VPC NIC to a manual IPv4 in the VPC subnet
-Can’t RDP/SSH after FW change	Cloud FW too strict	Ensure 3389/22 allowed from your IP in the Vultr FW Group
-Wrong adapter edited	Multiple NICs (public + VPC)	Identify the VPC adapter (no default gateway; private range)
-No name resolution on VPC	No DNS for private subnet	Use VPC IPs directly or stand up DNS later (e.g., on DC)
-Need routed internet from VPC NIC	Missing gateway/DNS on VPC NIC	Add gateway/DNS if required by your design
-
-
-
-🏁 Results
-Deployed 3 VMs (Windows DC, Windows Test, Ubuntu/Splunk) with VPC 2.0
-
-Applied a locked-down Vultr Firewall Group (SSH/RDP from my IP only)
-
-Fixed Windows NICs to use VPC IPs (manual IPv4) on the correct adapter
-
-Verified private connectivity (Ubuntu → Windows Test & DC) over the VPC network
